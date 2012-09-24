@@ -28,6 +28,22 @@ def show_all_user_data(request):
 You will need to manually add/remove permissions to a user.  Example:
 
 
+```python
+
+from django_generic_permissions.backends import add_permission
+from django_generic_permissions.backends import remove_permission
+
+def do_stuff(request):
+    user = request.user
+
+    # Give user permissions needed
+    add_permission(user, 'duper-user')
+
+    # Remove the old super user permission
+    remove_permission(user, 'super-duper-user')
+```
+
+
 ## Configuration
 
 You will need to include the authentication middleware supplied by this package.  If
