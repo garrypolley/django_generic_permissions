@@ -57,6 +57,8 @@ AUTHENTICATION_BACKENDS = [..., 'django_generic_permissions.backends.Permission'
 ```
 
 ### Mongo
+Note: This requires [mongoengine](https://github.com/hmarr/mongoengine)
+
 ```python
 # settigns.py
 DJANGO_GENERIC_PERMISSIONS_DB = 'mongo'
