@@ -25,7 +25,8 @@ def show_all_user_data(request):
     return ALL_USER_DATA
 ```
 
-You will need to manually add/remove permissions to a user.  Example:
+You will need to manually add/remove permissions to a user.  Permissions are
+case insensitive.  Example:
 
 
 ```python

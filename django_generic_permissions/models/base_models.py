@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class BaseUserPermission():
+class BaseUserPermission(object):
     """The interface for UserPermission backends to follow."""
 
     @classmethod
