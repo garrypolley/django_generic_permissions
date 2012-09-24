@@ -13,22 +13,3 @@ elif  backend_db == "mongo":
 else:
     # We do not support anythign other than mongo and sql
     raise ImproperlyConfigured("DJANGO_GENERIC_PERMISSIONS_DB only accepts 'mongo' for configuration")
-
-
-class BaseUserPermission():
-    """The interface for UserPermission backends to follow."""
-
-    @classmethod
-    def add_permission(user):
-        """Adds a permissoin for the user."""
-        raise NotImplementedError()
-
-    @classmethod
-    def remove_permission(user):
-        """Removes a permission from the user."""
-        raise NotImplementedError()
-
-    @classmethod
-    def has_permission(user):
-        """Returns True if the user has the given permission False otherwise"""
-        raise NotImplementedError()
