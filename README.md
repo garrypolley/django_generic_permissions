@@ -33,6 +33,7 @@ case insensitive.  Example:
 
 from django_generic_permissions.backends import add_permission
 from django_generic_permissions.backends import remove_permission
+from django_generic_permissions.backends import get_permissions
 
 def do_stuff(request):
     user = request.user
@@ -42,6 +43,9 @@ def do_stuff(request):
 
     # Remove the old super user permission
     remove_permission(user, 'super-duper-user')
+
+    # List out the current users permissions
+    get_permissions(user)
 ```
 
 
@@ -56,6 +60,7 @@ you wish to use mongo as your database then follow the config info mentioned bel
 
 AUTHENTICATION_BACKENDS = [..., 'django_generic_permissions.backends.Permission']
 
+# Only needed for SQL version
 INSTALLED_APPS = (..., 'django_generic_permissions')
 ```
 
@@ -64,7 +69,7 @@ Note: This requires [mongoengine](https://github.com/hmarr/mongoengine)
 
 ```python
 # settigns.py
-DJANGO_GENERIC_PERMISSIONS_DB = 'mongo'
+DJANGO_GENERIC_PERMISSIONS_DB = 'mongoengine'
 ```
 
 ### SQL
