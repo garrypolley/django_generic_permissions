@@ -46,14 +46,16 @@ def do_stuff(request):
 
 ## Configuration
 
-You will need to include the authentication middleware supplied by this package.  If
-you wish to use mongo as your backend then follow the config info mentioned below.
+You will need to include the authentication backend supplied by this package.  If
+you wish to use mongo as your database then follow the config info mentioned below.
 
 ```python
 # -*- coding: utf-8 -*-
 ## settings.py
 
 AUTHENTICATION_BACKENDS = [..., 'django_generic_permissions.backends.Permission']
+
+INSTALLED_APPS = (..., 'django_generic_permissions')
 ```
 
 ### Mongo
