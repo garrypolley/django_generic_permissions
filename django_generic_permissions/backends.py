@@ -14,4 +14,4 @@ class Permission(object):
 
     def has_perm(user_obj, perm, obj=None):
         """See if the user has the generic permission provided."""
-        return perm in UserPermission.get_permissions(user_obj)
+        return perm in get_permissions(user_obj)
