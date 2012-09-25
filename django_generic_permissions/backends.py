@@ -4,8 +4,9 @@ from .models import UserPermission
 
 
 add_permission = UserPermission.add_permission
-remove_permission = UserPermission.remove_permission
 get_permissions = UserPermission.get_permissions
+remove_permission = UserPermission.remove_permission
+has_permission = UserPermission.has_permission
 
 
 class Permission(object):
@@ -14,4 +15,4 @@ class Permission(object):
 
     def has_perm(user_obj, perm, obj=None):
         """See if the user has the generic permission provided."""
-        return perm in get_permissions(user_obj)
+        return has_permission(perm, user_obj)

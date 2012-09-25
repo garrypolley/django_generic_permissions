@@ -39,10 +39,10 @@ def do_stuff(request):
     user = request.user
 
     # Give user permissions needed
-    add_permission(user, 'duper-user')
+    add_permission('duper-user', user)
 
     # Remove the old super user permission
-    remove_permission(user, 'super-duper-user')
+    remove_permission('super-duper-user', user)
 
     # List out the current users permissions
     get_permissions(user)
@@ -52,7 +52,8 @@ def do_stuff(request):
 ## Configuration
 
 You will need to include the authentication backend supplied by this package.  If
-you wish to use mongo as your database then follow the config info mentioned below.
+you wish to use mongo as your database then follow the config info mentioned in the
+mongo section.
 
 ```python
 # -*- coding: utf-8 -*-
