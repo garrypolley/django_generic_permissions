@@ -5,8 +5,8 @@ from .models import UserPermission
 
 add_permission = UserPermission.add_permission
 get_permissions = UserPermission.get_permissions
-remove_permission = UserPermission.remove_permission
 has_permission = UserPermission.has_permission
+remove_permission = UserPermission.remove_permission
 
 
 class Permission(object):
