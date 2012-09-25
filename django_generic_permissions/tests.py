@@ -3,6 +3,7 @@
 import uuid
 
 from django.contrib.auth.decorators import permission_required
+# underscore import is done so these tests can run under mongo and sql backends
 from django.contrib.auth.models import _user_has_perm
 from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIRequest
@@ -107,6 +108,7 @@ class AuthBackendTest(TestCase):
     @patch('django.contrib.auth.models.auth')
     def test_no_permission_403(self, mockauth):
         """UNIT if a user lacks permissoin a 403 should be returned."""
+        # build up request
         mockauth.get_backends.return_value = [Permission]
         temp_user = FakeUser()
         self.request.user = temp_user
@@ -117,10 +119,12 @@ class AuthBackendTest(TestCase):
     @patch('django.contrib.auth.models.auth')
     def test_has_permission(self, mockauth):
         """UNIT user with pemrission should be granted access."""
+        # build up request
         mockauth.get_backends.return_value = [Permission]
         temp_user = FakeUser()
         add_permission(sample_perm, temp_user)
         self.request.user = temp_user
+
         response = sample_view(self.request)
 
         self.assertEquals(response.status_code, 200)
@@ -128,6 +132,7 @@ class AuthBackendTest(TestCase):
 
 class FakeUser(object):
     """Mocked out as much is needed for standard django user."""
+    # These class variables are lambda functions because they need to be callable
     is_active = lambda x: True
     is_authenticated = lambda x: True
     is_anonymous = lambda x: False
@@ -143,5 +148,6 @@ class FakeUser(object):
 
 @permission_required(sample_perm, raise_exception=True)
 def sample_view(fake_request):
-    """Simple view used to validate that permission required decorator can be used."""
+    """Simple view used to validate that permission required decorator works with our
+    Permission backend."""
     return HttpResponse()
