@@ -69,7 +69,7 @@ INSTALLED_APPS = (..., 'django_generic_permissions')
 Note: This requires [mongoengine](https://github.com/hmarr/mongoengine)
 
 ```python
-# settigns.py
+# settings.py
 DJANGO_GENERIC_PERMISSIONS_DB = 'mongoengine'
 ```
 
