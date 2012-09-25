@@ -56,3 +56,8 @@ class UserPermission(models.Model, BaseUserPermission):
 
             user_perm.permission_list = ",".join(current_permissions)
             user_perm.save(force_update=True)
+
+    @classmethod
+    def has_permission(cls, perm, user):
+        """Returns true if the user has the given permission. False otherwise."""
+        return perm in cls.get_permissions(user)
