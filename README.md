@@ -51,8 +51,6 @@ def do_stuff(request):
 
 ## Configuration
 
-:warning: MongoEngine not yet supported :warning:
-
 You will need to include the authentication backend supplied by this package.  If
 you wish to use mongo as your database then follow the config info mentioned in the
 mongoengine section.
@@ -78,3 +76,14 @@ DJANGO_GENERIC_PERMISSIONS_DB = 'mongoengine'
 ### SQL
 This library will default to using a SQL backend if you do not override and supply mongo
 as listed above.
+
+
+## Testing
+
+To test this app it is as simple as `python manage.py test django_generic_permissions`.  Note
+you need the following installed:
+
+* Django
+* django-generic-permissions (this app)
+* mock
+* mongoengine (If you use mongoengine)
