@@ -15,9 +15,9 @@ if backend_db is not None and backend_db not in ACCEPTABLE_BACKENDS:
 
 # Define the location of the backends
 sql_backend = 'django_generic_permissions.sql_models'
-mogoengine_backend = 'django_generic_permissions.mongoengine_models'
+mongoengine_backend = 'django_generic_permissions.mongoengine_models'
 
-backend_module = (import_module(mogoengine_backend) if backend_db == 'mongoengine'
+backend_module = (import_module(mongoengine_backend) if backend_db == 'mongoengine'
                   else import_module(sql_backend))
 
 # Django's syncdb command will fail without this weirdness

@@ -2,15 +2,29 @@
 
 import uuid
 
+from django.contrib.auth.decorators import permission_required
+# underscore import is done so these tests can run under mongo and sql backends
+from django.contrib.auth.models import _user_has_perm
+from django.core.exceptions import PermissionDenied
+from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpResponse
 from django.test import TestCase
+from django.test.client import FakePayload
+from mock import patch
 
 from .backends import add_permission
 from .backends import get_permissions
 from .backends import has_permission
+from .backends import Permission
 from .backends import remove_permission
+
+sample_perm = "sample-perm"
 
 
 class ModelBackendTest(TestCase):
+    """Tests that the UserPermission backend works. These tests can be ran with either
+    mongoengine or sql as your backend.
+    """
 
     perm_1 = 'perm_1'
     perm_2 = 'perm_2'
@@ -36,7 +50,7 @@ class ModelBackendTest(TestCase):
 
         added_permissions = get_permissions(temp_user)
 
-        # Verify all permissions where added correctly and there are no extras
+        # Verify all permissions were added correctly and there are no extras
         self.assertIn(self.perm_1, added_permissions)
         self.assertIn(self.perm_2, added_permissions)
         self.assertIn(self.perm_3, added_permissions)
@@ -67,13 +81,73 @@ class ModelBackendTest(TestCase):
 
 
 class AuthBackendTest(TestCase):
-    # TODO test out authbackend
-    pass
 
+    def setUp(self):
+        """initialize a basic djagno wsgi request."""
 
-def gen_id():
-    return uuid.uuid4().hex
+        # copied from django.test.client
+        self.environ = {
+            'HTTP_COOKIE':       '',
+            'PATH_INFO':         '/',
+            'REMOTE_ADDR':       '127.0.0.1',
+            'REQUEST_METHOD':    'GET',
+            'SCRIPT_NAME':       '',
+            'SERVER_NAME':       'testserver',
+            'SERVER_PORT':       '80',
+            'SERVER_PROTOCOL':   'HTTP/1.1',
+            'wsgi.version':      (1, 0),
+            'wsgi.url_scheme':   'http',
+            'wsgi.input':        FakePayload(b''),
+            'wsgi.errors':       '',
+            'wsgi.multiprocess': True,
+            'wsgi.multithread':  False,
+            'wsgi.run_once':     False,
+        }
+        self.request = WSGIRequest(self.environ)
+
+    @patch('django.contrib.auth.models.auth')
+    def test_no_permission_403(self, mockauth):
+        """UNIT if a user lacks permissoin a 403 should be returned."""
+        # build up request
+        mockauth.get_backends.return_value = [Permission]
+        temp_user = FakeUser()
+        self.request.user = temp_user
+
+        with self.assertRaises(PermissionDenied):
+            sample_view(self.request)
+
+    @patch('django.contrib.auth.models.auth')
+    def test_has_permission(self, mockauth):
+        """UNIT user with pemrission should be granted access."""
+        # build up request
+        mockauth.get_backends.return_value = [Permission]
+        temp_user = FakeUser()
+        add_permission(sample_perm, temp_user)
+        self.request.user = temp_user
+
+        response = sample_view(self.request)
+
+        self.assertEquals(response.status_code, 200)
 
 
 class FakeUser(object):
-    id = gen_id()
+    """Mocked out as much is needed for standard django user."""
+    # These class variables are lambda functions because they need to be callable
+    is_active = lambda x: True
+    is_authenticated = lambda x: True
+    is_anonymous = lambda x: False
+    get_all_permissions = lambda x: []
+
+    def __init__(self):
+        self.id = uuid.uuid4().hex
+
+    def has_perm(self, perm, obj=None):
+        """Near complete coppy of the django.auth.contrib.models.User has_perm method."""
+        return _user_has_perm(self, perm, None)
+
+
+@permission_required(sample_perm, raise_exception=True)
+def sample_view(fake_request):
+    """Simple view used to validate that permission required decorator works with our
+    Permission backend."""
+    return HttpResponse()

@@ -13,6 +13,7 @@ class Permission(object):
     """A permission backend to check for generic permissions.
     Note: this provides no means of authentication."""
 
-    def has_perm(user_obj, perm, obj=None):
+    @classmethod
+    def has_perm(cls, user_obj, perm, obj=None):
         """See if the user has the generic permission provided."""
         return has_permission(perm, user_obj)

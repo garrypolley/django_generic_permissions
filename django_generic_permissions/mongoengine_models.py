@@ -4,4 +4,4 @@ from .base_models import BaseUserPermission
 
 
 class UserPermission(BaseUserPermission):
-    pass
+    raise NotImplementedError()
