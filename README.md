@@ -51,9 +51,11 @@ def do_stuff(request):
 
 ## Configuration
 
+:warning: MongoEngine not yet supported :warning:
+
 You will need to include the authentication backend supplied by this package.  If
 you wish to use mongo as your database then follow the config info mentioned in the
-mongo section.
+mongoengine section.
 
 ```python
 # -*- coding: utf-8 -*-
@@ -65,7 +67,7 @@ AUTHENTICATION_BACKENDS = [..., 'django_generic_permissions.backends.Permission'
 INSTALLED_APPS = (..., 'django_generic_permissions')
 ```
 
-### Mongo
+### MongoEngine
 Note: This requires [mongoengine](https://github.com/hmarr/mongoengine)
 
 ```python

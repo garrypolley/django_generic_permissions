@@ -16,7 +16,7 @@ setup(
         'django>=1.4'
     ],
     classifiers=[
-        'Development Status :: 1 - Alpha',
+        'Development Status :: 5 - Production Stable',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
