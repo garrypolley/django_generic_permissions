@@ -8,13 +8,12 @@ from .base_models import BaseUserPermission
 
 
 class UserPermission(Document, BaseUserPermission):
-    user_id = StringField(db_field='ui')
+    user_id = StringField(db_field='ui', primary_key=True)
     permission_list = ListField(StringField(), db_field='pl')
 
     meta = {
-        'collection': 'user_invites',
+        'collection': 'user_permission',
         'index_types': False,
-        'indexes': ['user_id']
     }
 
     @classmethod
@@ -23,10 +22,10 @@ class UserPermission(Document, BaseUserPermission):
 
         # Ensure we do not create duplicate users
         try:
-            user_perm = cls.objects.get(user_id=user.id)
+            user_perm = cls.objects.get(user_id=str(user.id))
             new_user = False
         except cls.DoesNotExist:
-            user_perm = cls(user_id=user.id, permission_list=[perm])
+            user_perm = cls(user_id=str(user.id), permission_list=[perm])
             new_user = True
 
         if new_user:
@@ -42,15 +41,16 @@ class UserPermission(Document, BaseUserPermission):
         """Return a list of user permissions.  If user does not exist return empty list"""
 
         try:
-            user_perm = UserPermission.objects.get(user_id=user.id)
+            user_perm = UserPermission.objects.get(user_id=str(user.id))
             return user_perm.permission_list
         except UserPermission.DoesNotExist:
             return []
 
     @classmethod
     def remove_permission(cls, perm, user):
-        """Removes the given permission from the user if it exists."""
-        user_perm = cls.objects.get(user_id=user.id)
+        """Removes the given permission from the user if it exists.
+        Raises an exception if the permission does not exist."""
+        user_perm = cls.objects.get(user_id=str(user.id))
 
         # Verify the user has the given permission
         if perm in user_perm.permission_list:
