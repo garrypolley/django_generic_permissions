@@ -84,6 +84,5 @@ To test this app it is as simple as `python manage.py test django_generic_permis
 you need the following installed:
 
 * Django
-* django-generic-permissions (this app)
 * mock
 * mongoengine (If you use mongoengine)
