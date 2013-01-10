@@ -3,6 +3,9 @@ django_generic_permissions
 
 A simple Authentication Backend to manage specific permissions.
 
+### Install
+`pip install django_generic_permissions`
+
 
 ### Use Cases
 
