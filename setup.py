@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-generic-permissions',
-    version='0.0.1',
+    version='0.1.0',
     description='A generic permission framework for Django',
     author='Garry Polley',
     author_email='garrympolley@gmail.com',
